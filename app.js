@@ -5,7 +5,6 @@ const app = express();
 const cors = require("cors");
 require("dotenv/config");
 const errorHandler = require("./helpers/error-handler.helper");
-const authHelper = require("./helpers/routeProtection.helper");
 
 const port = process.env.PORT;
 const databaseConnection = process.env.DATABASE;
@@ -21,7 +20,6 @@ const authRouter = require("./routes/auth.route");
 const miscRouter = require("./routes/misc.route");
 app.use(`${api}/misc`, miscRouter);
 app.use(`${api}/auth`, authRouter);
-app.use(authHelper.protect);
 
 mongoose.connect(databaseConnection).then(() => console.log("DB Connected"));
 app.listen(port, () => console.log(`App running on http://localhost:${port}`));
