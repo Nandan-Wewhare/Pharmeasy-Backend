@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const app = express();
+const cors = require("cors");
 require("dotenv/config");
 const errorHandler = require("./helpers/error-handler.helper");
 const authHelper = require("./helpers/routeProtection.helper");
@@ -12,6 +13,8 @@ const api = process.env.API_URL;
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
+app.options("*", cors());
 app.use(errorHandler);
 
 const authRouter = require("./routes/auth.route");
