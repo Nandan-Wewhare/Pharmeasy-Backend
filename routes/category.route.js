@@ -17,4 +17,15 @@ categoryRouter.post("/", async (req, res) => {
   res.status(201).send({ status: false, categories: categories });
 });
 
+categoryRouter.get("/", async (req, res) => {
+  let allCategories = await Category.find();
+
+  if (!allCategories)
+    return res
+      .status(404)
+      .send({ status: false, message: "Error in fetching all categories" });
+
+  res.status(200).send({ status: true, categories: allCategories });
+});
+
 module.exports = categoryRouter;
