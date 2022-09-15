@@ -1,22 +1,44 @@
 const mongoose = require("mongoose");
+const mongoMemoryServer = require("mongodb-memory-server");
 const httpMocks = require("node-mocks-http");
-const correctUser = require("../tests/mock-data/correct-user.json");
-const incorrectUser = require("../tests/mock-data/incorrect-user.json");
+const correctUser = require("../tests/mock-data/auth/correct-user.json");
+const incorrectUser = require("../tests/mock-data/auth/incorrect-user.json");
 const authController = require("../controllers/auth.controller");
-require("dotenv/config");
 
+let mongoServer;
 let req, res;
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.DATABASE);
+  // using local mongoServer for testing to prevent unnecessary R/W to MongoDB Cloud
+  mongoServer = await mongoMemoryServer.MongoMemoryServer.create();
+  const uri = await mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
+  await mongoose.connection.dropDatabase();
+  await mongoose.connection.close();
+  await mongoServer.stop();
 });
 
-describe("Successful login", () => {
-  beforeEach(() => {
+describe("Register", () => {
+  req = httpMocks.createRequest({
+    method: "POST",
+    url: "/auth/register",
+    body: correctUser,
+  });
+
+  res = httpMocks.createResponse();
+
+  test("Success", async () => {
+    await authController.register(req, res);
+
+    expect(res.statusCode).toBe(201);
+  });
+});
+
+describe("Login", () => {
+  test("Success", async () => {
     req = httpMocks.createRequest({
       method: "POST",
       url: "/auth/login",
@@ -24,16 +46,11 @@ describe("Successful login", () => {
     });
 
     res = httpMocks.createResponse();
-  });
-
-  it("should login successfully", async () => {
     await authController.login(req, res);
     expect(res.statusCode).toBe(200);
   });
-});
 
-describe("Unsuccessful login", () => {
-  beforeEach(() => {
+  test("Failure", async () => {
     req = httpMocks.createRequest({
       method: "POST",
       url: "/auth/login",
@@ -41,9 +58,6 @@ describe("Unsuccessful login", () => {
     });
 
     res = httpMocks.createResponse();
-  });
-
-  it("should not login successfully", async () => {
     await authController.login(req, res);
     expect(res.statusCode).toBe(400);
   });
