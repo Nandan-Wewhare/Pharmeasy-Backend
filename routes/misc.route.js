@@ -1,33 +1,12 @@
 const express = require("express");
-const { Delivery } = require("../models/delivery.model");
 const miscRouter = express.Router();
+const miscController = require("../controllers/misc.controller");
 
-miscRouter.get("/checkDelivery/:pincode", async (req, res) => {
-  let deliveryData = await Delivery.findOne({ pincode: req.params.pincode });
+miscRouter.get(
+  "/checkDelivery/:pincode",
+  miscController.checkDeliveryAtPincode
+);
 
-  if (!deliveryData)
-    return res.status(200).send({
-      status: false,
-      message: "Sorry, we do not deliver at this pincode currently.",
-    });
-
-  res.status(200).send({ status: true, data: deliveryData });
-});
-
-miscRouter.post("/addPincode", async (req, res) => {
-  let deliveryData = new Delivery({
-    pincode: req.body.pincode,
-    deliveryBy: req.body.deliveryBy,
-  });
-
-  deliveryData = await deliveryData.save();
-
-  if (!deliveryData)
-    return res
-      .status(400)
-      .send({ status: false, message: "Failed to add delivery data." });
-
-  res.status(201).send({ status: true, data: deliveryData });
-});
+miscRouter.post("/addPincode", miscController.addPincode);
 
 module.exports = miscRouter;
