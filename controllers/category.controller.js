@@ -12,7 +12,7 @@ exports.addCategories = async (req, res) => {
       .status(400)
       .send({ status: false, message: "Failed to add categories" });
 
-  res.status(201).send({ status: false, categories: categories });
+  res.status(201).send({ status: true, categories: categories });
 };
 
 exports.getAllCategories = async (req, res) => {

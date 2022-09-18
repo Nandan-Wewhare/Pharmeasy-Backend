@@ -20,11 +20,13 @@ const authRouter = require("./routes/auth.route");
 const miscRouter = require("./routes/misc.route");
 const categoryRouter = require("./routes/category.route");
 const reviewRouter = require("./routes/review.route");
+const productRouter = require("./routes/product.route");
 
 app.use(`${api}/misc`, miscRouter);
 app.use(`${api}/auth`, authRouter);
 app.use(`${api}/categories`, categoryRouter);
 app.use(`${api}/reviews`, reviewRouter);
+app.use(`${api}/products`, productRouter);
 
 mongoose.connect(databaseConnection).then(() => console.log("DB Connected"));
 app.listen(port, () => console.log(`App running on http://localhost:${port}`));
