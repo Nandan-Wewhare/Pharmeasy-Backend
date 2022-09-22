@@ -26,6 +26,7 @@ const userSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  __v: { type: Number, select: false },
 });
 
 exports.User = mongoose.model("User", userSchema);

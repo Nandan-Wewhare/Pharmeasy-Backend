@@ -1,7 +1,9 @@
 const { Delivery } = require("../models/delivery.model");
 
 exports.checkDeliveryAtPincode = async (req, res) => {
-  let deliveryData = await Delivery.findOne({ pincode: req.params.pincode });
+  let deliveryData = await Delivery.findOne({
+    pincode: req.params.pincode,
+  }).select("-__v");
 
   if (!deliveryData)
     return res.status(200).send({

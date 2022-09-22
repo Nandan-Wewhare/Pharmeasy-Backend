@@ -16,7 +16,7 @@ exports.addCategories = async (req, res) => {
 };
 
 exports.getAllCategories = async (req, res) => {
-  let allCategories = await Category.find();
+  let allCategories = await Category.find().select("-__v");
 
   if (!allCategories)
     return res

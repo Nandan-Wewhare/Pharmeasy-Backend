@@ -44,7 +44,7 @@ exports.getProductsInCategory = async (req, res) => {
       .status(400)
       .send({ status: false, message: "Invalid category id" });
 
-  products = await Product.find({ category: categoryId });
+  products = await Product.find({ category: categoryId }).select("-__v");
 
   res.status(200).send({ status: true, products: products });
 };
