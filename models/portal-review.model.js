@@ -14,6 +14,7 @@ const portalReviewSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  __v: { type: Number, select: false },
 });
 
 var autoPopulateReviewer = function (next) {
