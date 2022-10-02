@@ -53,3 +53,16 @@ exports.getProductsInCategory = async (req, res) => {
     products: products,
   });
 };
+
+exports.getProductDetail = async (req, res) => {
+  let productId = req.params.productId;
+
+  let product = await Product.findById(productId);
+
+  if (!product)
+    return res
+      .status(404)
+      .send({ status: false, message: "No product with this Id exists" });
+
+  res.status(200).send({ status: true, product: product });
+};
