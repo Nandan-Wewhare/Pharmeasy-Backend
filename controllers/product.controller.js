@@ -20,6 +20,7 @@ exports.addProductsToCategory = async (req, res) => {
         brand: product.brand,
         price: product.price,
         category: categoryId,
+        discount: product.discount,
       })
     );
   });

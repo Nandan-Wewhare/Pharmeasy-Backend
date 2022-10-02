@@ -21,6 +21,10 @@ const productSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  discount: {
+    type: Number,
+    default: 0,
+  },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categories",
@@ -34,6 +38,7 @@ const productSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  __v: { type: Number, select: false },
 });
 
 exports.Product = mongoose.model("Product", productSchema);
