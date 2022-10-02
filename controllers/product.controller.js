@@ -47,5 +47,9 @@ exports.getProductsInCategory = async (req, res) => {
 
   products = await Product.find({ category: categoryId }).select("-__v");
 
-  res.status(200).send({ status: true, products: products });
+  res.status(200).send({
+    status: true,
+    category: category.get("name"),
+    products: products,
+  });
 };
