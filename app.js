@@ -21,12 +21,14 @@ const miscRouter = require("./routes/misc.route");
 const categoryRouter = require("./routes/category.route");
 const reviewRouter = require("./routes/review.route");
 const productRouter = require("./routes/product.route");
+const cartRouter = require("./routes/cart.route");
 
 app.use(`${api}/misc`, miscRouter);
 app.use(`${api}/auth`, authRouter);
 app.use(`${api}/categories`, categoryRouter);
 app.use(`${api}/reviews`, reviewRouter);
 app.use(`${api}/products`, productRouter);
+app.use(`${api}/cart`, cartRouter);
 
 mongoose.connect(databaseConnection).then(() => console.log("DB Connected"));
 app.listen(port, () => console.log(`App running on http://localhost:${port}`));

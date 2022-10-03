@@ -26,6 +26,11 @@ const userSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  cart: {
+    type: Array,
+    ref: "CartItem",
+    default: [],
+  },
   __v: { type: Number, select: false },
 });
 

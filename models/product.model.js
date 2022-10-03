@@ -41,4 +41,6 @@ const productSchema = mongoose.Schema({
   __v: { type: Number, select: false },
 });
 
+
+
 exports.Product = mongoose.model("Product", productSchema);
