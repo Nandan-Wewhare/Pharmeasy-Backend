@@ -10,6 +10,7 @@ const itemSchema = mongoose.Schema({
     default: 0,
   },
   _id: { select: false },
+  __v: { type: Number, select: false },
 });
 
 const cartSchema = mongoose.Schema({
@@ -19,6 +20,10 @@ const cartSchema = mongoose.Schema({
     ref: "User",
   },
   total: {
+    type: Number,
+    default: 0,
+  },
+  totalItems: {
     type: Number,
     default: 0,
   },

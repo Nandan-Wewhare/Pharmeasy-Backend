@@ -27,8 +27,9 @@ exports.addItemToCart = async (req, res) => {
     cart.products.push({ productId: product, quantity: 1 });
   }
   cart.total += product.price - (product.discount / 100) * product.price;
+  cart.totalItems += 1;
   cart = await cart.save();
-  return res.status(200).send({ status: true, updatedCart: cart });
+  return res.status(200).send({ status: true, cart: cart });
 };
 
 exports.getCart = async (req, res) => {
@@ -77,8 +78,9 @@ exports.decreaseQuantity = async (req, res) => {
       cart.total -=
         (product.price - (product.discount / 100) * product.price) * qty;
     }
+    cart.totalItems -= 1;
     cart = await cart.save();
-    return res.status(200).send({ status: true, updatedCart: cart });
+    return res.status(200).send({ status: true, cart: cart });
   }
   res
     .status(400)
@@ -106,8 +108,9 @@ exports.removeItem = async (req, res) => {
     cart.products.splice(itemIndex, 1);
     cart.total -=
       (product.price - (product.discount / 100) * product.price) * qty;
+    cart.totalItems -= qty;
     cart = await cart.save();
-    return res.status(200).send({ status: true, updatedCart: cart });
+    return res.status(200).send({ status: true, cart: cart });
   }
   res
     .status(400)
