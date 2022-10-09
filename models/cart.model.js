@@ -1,32 +1,40 @@
 const mongoose = require("mongoose");
 
-const itemSchema = mongoose.Schema({
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
+const itemSchema = mongoose.Schema(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+    quantity: {
+      type: Number,
+      default: 0,
+    },
+    _id: { select: false },
+    __v: { type: Number, select: false },
   },
-  quantity: {
-    type: Number,
-    default: 0,
-  },
-  _id: { select: false },
-});
+  { versionKey: false }
+);
 
-const cartSchema = mongoose.Schema({
-  products: [itemSchema],
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+const cartSchema = mongoose.Schema(
+  {
+    products: [itemSchema],
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    total: {
+      type: Number,
+      default: 0,
+    },
+    totalItems: {
+      type: Number,
+      default: 0,
+    },
+    __v: { type: Number, select: false },
   },
-  total: {
-    type: Number,
-    default: 0,
-  },
-  totalItems: {
-    type: Number,
-    default: 0,
-  },
-});
+  { versionKey: false }
+);
 
 var autoPopulateProduct = function (next) {
   this.populate({
