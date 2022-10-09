@@ -10,7 +10,6 @@ const itemSchema = mongoose.Schema({
     default: 0,
   },
   _id: { select: false },
-  __v: { type: Number, select: false },
 });
 
 const cartSchema = mongoose.Schema({
@@ -27,7 +26,6 @@ const cartSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-  __v: { type: Number, select: false },
 });
 
 var autoPopulateProduct = function (next) {
