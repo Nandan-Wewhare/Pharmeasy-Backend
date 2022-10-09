@@ -71,11 +71,14 @@ exports.decreaseQuantity = async (req, res) => {
       productItem.quantity -= 1;
       cart.products[itemIndex] = productItem;
       cart.total -= product.price - (product.discount / 100) * product.price;
-      cart = await cart.save();
-      return res.status(200).send({ status: true, updatedCart: cart });
     } else {
-      this.removeItem(req, res);
+      var qty = productItem.quantity;
+      cart.products.splice(itemIndex, 1);
+      cart.total -=
+        (product.price - (product.discount / 100) * product.price) * qty;
     }
+    cart = await cart.save();
+    return res.status(200).send({ status: true, updatedCart: cart });
   }
   res
     .status(400)
