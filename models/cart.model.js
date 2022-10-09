@@ -9,6 +9,7 @@ const itemSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  _id: { select: false },
 });
 
 const cartSchema = mongoose.Schema({
@@ -24,4 +25,15 @@ const cartSchema = mongoose.Schema({
   __v: { type: Number, select: false },
 });
 
+var autoPopulateProduct = function (next) {
+  this.populate({
+    path: "products",
+    populate: [{ path: "productId", model: "Product" }],
+  });
+  next();
+};
+
+cartSchema.pre("findOne", autoPopulateProduct);
+
+exports.Item = itemSchema;
 exports.Cart = mongoose.model("Cart", cartSchema);

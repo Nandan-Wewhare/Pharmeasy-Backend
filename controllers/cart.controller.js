@@ -17,28 +17,18 @@ exports.addItemToCart = async (req, res) => {
 
   let cart = await Cart.findOne({ userId: userId });
 
-  if (cart) {
-    let itemIndex = cart.products.findIndex((p) => p.productId == productId);
+  let itemIndex = cart.products.findIndex((p) => p.productId._id == productId);
 
-    if (itemIndex > -1) {
-      let productItem = cart.products[itemIndex];
-      productItem.quantity += 1;
-      cart.products[itemIndex] = productItem;
-    } else {
-      cart.products.push({ productId: productId, quantity: 1 });
-    }
-    cart.total += product.price - (product.discount / 100) * product.price;
-    cart = await cart.save();
-    return res.status(200).send({ status: true, updatedCart: cart });
+  if (itemIndex > -1) {
+    let productItem = cart.products[itemIndex];
+    productItem.quantity += 1;
+    cart.products[itemIndex] = productItem;
   } else {
-    const newCart = await Cart.create({
-      userId,
-      products: [{ productId: productId, quantity: 1 }],
-      total: product.price - (product.discount / 100) * product.price,
-    });
-
-    return res.status(201).send({ status: true, newCart: newCart });
+    cart.products.push({ productId: product, quantity: 1 });
   }
+  cart.total += product.price - (product.discount / 100) * product.price;
+  cart = await cart.save();
+  return res.status(200).send({ status: true, updatedCart: cart });
 };
 
 exports.getCart = async (req, res) => {
@@ -73,7 +63,7 @@ exports.decreaseQuantity = async (req, res) => {
       .status(404)
       .send({ status: false, message: "Cart not found for this user" });
 
-  let itemIndex = cart.products.findIndex((p) => p.productId == productId);
+  let itemIndex = cart.products.findIndex((p) => p.productId._id == productId);
 
   if (itemIndex > -1) {
     let productItem = cart.products[itemIndex];
@@ -107,7 +97,7 @@ exports.removeItem = async (req, res) => {
       .status(404)
       .send({ status: false, message: "Cart not found for this user" });
 
-  let itemIndex = cart.products.findIndex((p) => p.productId == productId);
+  let itemIndex = cart.products.findIndex((p) => p.productId._id == productId);
   if (itemIndex > -1) {
     var qty = cart.products[itemIndex].quantity;
     cart.products.splice(itemIndex, 1);

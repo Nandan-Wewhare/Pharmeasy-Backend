@@ -1,6 +1,7 @@
 const { User } = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { Cart } = require("../models/cart.model");
 require("dotenv/config");
 
 exports.login = async (req, res) => {
@@ -40,6 +41,14 @@ exports.register = async (req, res) => {
   });
 
   user = await user.save();
+  var userId = user.id;
+
+  await Cart.create({
+    userId,
+    products: [],
+    total: 0,
+  });
+
   if (!user)
     return res
       .status(400)
