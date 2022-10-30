@@ -1,10 +1,12 @@
 const { Order } = require("../models/order.model");
+const { Cart } = require("../models/cart.model");
 
 exports.createOrder = async (req, res) => {
+  let userId = req.params.userId;
   let newOrder = await Order.create({
     paymentId: req.body.paymentId,
     products: req.body.products,
-    user: req.params.userId,
+    user: userId,
     total: req.body.total,
   });
   if (!newOrder)
@@ -12,6 +14,10 @@ exports.createOrder = async (req, res) => {
       .status(400)
       .send({ status: false, message: "Failed to create order" });
 
+  await Cart.findOneAndUpdate(
+    { userId: userId },
+    { $set: { products: [], total: 0, totalItems: 0 } }
+  );
   res.status(201).send({ status: true, order: newOrder });
 };
 
