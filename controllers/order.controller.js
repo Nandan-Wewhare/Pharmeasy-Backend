@@ -2,11 +2,11 @@ const { Order } = require("../models/order.model");
 
 exports.createOrder = async (req, res) => {
   let newOrder = await Order.create({
+    paymentId: req.body.paymentId,
     products: req.body.products,
     user: req.params.userId,
     total: req.body.total,
   });
-
   if (!newOrder)
     return res
       .status(400)
