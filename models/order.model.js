@@ -28,7 +28,6 @@ const orderSchema = mongoose.Schema({
 
 var autoPopulateProductandUser = function (next) {
   this.populate("products");
-  this.populate("user");
   next();
 };
 
