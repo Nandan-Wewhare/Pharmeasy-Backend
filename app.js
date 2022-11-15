@@ -23,12 +23,15 @@ const reviewRouter = require("./routes/review.route");
 const productRouter = require("./routes/product.route");
 const cartRouter = require("./routes/cart.route");
 const orderRouter = require("./routes/order.route");
+const { protect } = require("./helpers/routeProtection.helper");
 
 app.use(`${api}/misc`, miscRouter);
 app.use(`${api}/auth`, authRouter);
 app.use(`${api}/categories`, categoryRouter);
 app.use(`${api}/reviews`, reviewRouter);
 app.use(`${api}/products`, productRouter);
+
+app.use(protect);
 app.use(`${api}/cart`, cartRouter);
 app.use(`${api}/orders`, orderRouter);
 
