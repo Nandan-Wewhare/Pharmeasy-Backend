@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: pharmeasy-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pharmeasy-backend
+  template:
+    metadata:
+      labels:
+        app: pharmeasy-backend
+    spec:
+      containers:
+        - name: nodeserver
+          image: nandanwewhare/pharmeasy-backend:latest
+          ports:
+            - containerPort: 8080
